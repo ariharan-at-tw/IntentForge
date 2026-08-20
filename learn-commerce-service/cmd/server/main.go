@@ -33,6 +33,11 @@ func main() {
 			return
 		}
 
+		if r.URL.Query().Get("min_price") != "" || r.URL.Query().Get("max_price") != "" {
+			productHandler.GetProductsByPriceRange(w, r)
+			return
+		}
+
 		productHandler.GetProducts(w, r)
 	})
 	http.HandleFunc("/products/", productHandler.GetProductByID)

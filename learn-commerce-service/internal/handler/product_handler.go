@@ -3,6 +3,7 @@ package handler
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"learn-commerce-service/internal/service"
@@ -104,6 +105,68 @@ func (h *ProductHandler) GetProductsByCategory(
 	}
 
 	products := h.productService.GetProductsByCategory(category)
+
+	w.Header().Set("Content-Type", "application/json")
+
+	if err := json.NewEncoder(w).Encode(products); err != nil {
+		http.Error(
+			w,
+			"failed to encode products",
+			http.StatusInternalServerError,
+		)
+	}
+}
+
+func (h *ProductHandler) GetProductsByPriceRange(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+	query := r.URL.Query()
+
+	var minPrice *float64
+	var maxPrice *float64
+
+	if value := query.Get("min_price"); value != "" {
+		parsed, err := strconv.ParseFloat(value, 64)
+		if err != nil {
+			http.Error(
+				w,
+				"invalid min_price",
+				http.StatusBadRequest,
+			)
+			return
+		}
+
+		minPrice = &parsed
+	}
+
+	if value := query.Get("max_price"); value != "" {
+		parsed, err := strconv.ParseFloat(value, 64)
+		if err != nil {
+			http.Error(
+				w,
+				"invalid max_price",
+				http.StatusBadRequest,
+			)
+			return
+		}
+
+		maxPrice = &parsed
+	}
+
+	if minPrice != nil && maxPrice != nil && *minPrice > *maxPrice {
+		http.Error(
+			w,
+			"min_price cannot be greater than max_price",
+			http.StatusBadRequest,
+		)
+		return
+	}
+
+	products := h.productService.GetProductsByPriceRange(
+		minPrice,
+		maxPrice,
+	)
 
 	w.Header().Set("Content-Type", "application/json")
 

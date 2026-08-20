@@ -56,3 +56,24 @@ func (r *ProductRepository) GetByCategory(category string) []models.Product {
 
 	return results
 }
+
+func (r *ProductRepository) GetByPriceRange(
+	minPrice *float64,
+	maxPrice *float64,
+) []models.Product {
+	var results []models.Product
+
+	for _, product := range r.products {
+		if minPrice != nil && product.Price < *minPrice {
+			continue
+		}
+
+		if maxPrice != nil && product.Price > *maxPrice {
+			continue
+		}
+
+		results = append(results, product)
+	}
+
+	return results
+}

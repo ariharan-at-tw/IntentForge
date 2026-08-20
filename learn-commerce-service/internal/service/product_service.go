@@ -32,3 +32,10 @@ func (s *ProductService) SearchProductsByName(name string) []models.Product {
 func (s *ProductService) GetProductsByCategory(category string) []models.Product {
 	return s.productRepository.GetByCategory(category)
 }
+
+func (s *ProductService) GetProductsByPriceRange(
+	minPrice *float64,
+	maxPrice *float64,
+) []models.Product {
+	return s.productRepository.GetByPriceRange(minPrice, maxPrice)
+}
