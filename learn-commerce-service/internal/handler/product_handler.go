@@ -87,3 +87,31 @@ func (h *ProductHandler) SearchProductsByName(
 		)
 	}
 }
+
+func (h *ProductHandler) GetProductsByCategory(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+	category := r.URL.Query().Get("category")
+
+	if category == "" {
+		http.Error(
+			w,
+			"category query parameter is required",
+			http.StatusBadRequest,
+		)
+		return
+	}
+
+	products := h.productService.GetProductsByCategory(category)
+
+	w.Header().Set("Content-Type", "application/json")
+
+	if err := json.NewEncoder(w).Encode(products); err != nil {
+		http.Error(
+			w,
+			"failed to encode products",
+			http.StatusInternalServerError,
+		)
+	}
+}

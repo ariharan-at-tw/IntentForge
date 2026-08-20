@@ -28,6 +28,11 @@ func main() {
 			return
 		}
 
+		if r.URL.Query().Get("category") != "" {
+			productHandler.GetProductsByCategory(w, r)
+			return
+		}
+
 		productHandler.GetProducts(w, r)
 	})
 	http.HandleFunc("/products/", productHandler.GetProductByID)

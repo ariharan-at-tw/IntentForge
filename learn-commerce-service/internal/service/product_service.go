@@ -28,3 +28,7 @@ func (s *ProductService) GetProductByID(id string) (*models.Product, error) {
 func (s *ProductService) SearchProductsByName(name string) []models.Product {
 	return s.productRepository.SearchByName(name)
 }
+
+func (s *ProductService) GetProductsByCategory(category string) []models.Product {
+	return s.productRepository.GetByCategory(category)
+}

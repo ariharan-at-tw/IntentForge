@@ -44,3 +44,15 @@ func (r *ProductRepository) SearchByName(name string) []models.Product {
 
 	return results
 }
+
+func (r *ProductRepository) GetByCategory(category string) []models.Product {
+	var results []models.Product
+
+	for _, product := range r.products {
+		if strings.EqualFold(product.Category, category) {
+			results = append(results, product)
+		}
+	}
+
+	return results
+}
