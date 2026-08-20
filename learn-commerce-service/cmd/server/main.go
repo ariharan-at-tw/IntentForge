@@ -22,10 +22,8 @@ func main() {
 	productHandler :=
 		handler.NewProductHandler(productService)
 
-	http.HandleFunc(
-		"/products",
-		productHandler.GetProducts,
-	)
+	http.HandleFunc("/products", productHandler.GetProducts)
+	http.HandleFunc("/products/", productHandler.GetProductByID)
 
 	fmt.Println(
 		"Commerce service running on http://localhost:8080",

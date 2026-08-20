@@ -20,3 +20,7 @@ func NewProductService(
 func (s *ProductService) GetAllProducts() []models.Product {
 	return s.productRepository.GetAll()
 }
+
+func (s *ProductService) GetProductByID(id string) (*models.Product, error) {
+	return s.productRepository.GetByID(id)
+}
