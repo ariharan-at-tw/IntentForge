@@ -24,3 +24,7 @@ func (s *ProductService) GetAllProducts() []models.Product {
 func (s *ProductService) GetProductByID(id string) (*models.Product, error) {
 	return s.productRepository.GetByID(id)
 }
+
+func (s *ProductService) SearchProductsByName(name string) []models.Product {
+	return s.productRepository.SearchByName(name)
+}

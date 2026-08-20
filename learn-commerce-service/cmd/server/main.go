@@ -22,7 +22,14 @@ func main() {
 	productHandler :=
 		handler.NewProductHandler(productService)
 
-	http.HandleFunc("/products", productHandler.GetProducts)
+	http.HandleFunc("/products", func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Query().Get("name") != "" {
+			productHandler.SearchProductsByName(w, r)
+			return
+		}
+
+		productHandler.GetProducts(w, r)
+	})
 	http.HandleFunc("/products/", productHandler.GetProductByID)
 
 	fmt.Println(

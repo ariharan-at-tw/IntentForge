@@ -59,3 +59,31 @@ func (h *ProductHandler) GetProductByID(
 		)
 	}
 }
+
+func (h *ProductHandler) SearchProductsByName(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+	name := r.URL.Query().Get("name")
+
+	if name == "" {
+		http.Error(
+			w,
+			"name query parameter is required",
+			http.StatusBadRequest,
+		)
+		return
+	}
+
+	products := h.productService.SearchProductsByName(name)
+
+	w.Header().Set("Content-Type", "application/json")
+
+	if err := json.NewEncoder(w).Encode(products); err != nil {
+		http.Error(
+			w,
+			"failed to encode products",
+			http.StatusInternalServerError,
+		)
+	}
+}

@@ -3,6 +3,7 @@ package repository
 import (
 	"fmt"
 	"learn-commerce-service/internal/models"
+	"strings"
 )
 
 type ProductRepository struct {
@@ -27,4 +28,19 @@ func (r *ProductRepository) GetByID(id string) (*models.Product, error) {
 	}
 
 	return nil, fmt.Errorf("product not found")
+}
+
+func (r *ProductRepository) SearchByName(name string) []models.Product {
+	var results []models.Product
+
+	for _, product := range r.products {
+		if strings.Contains(
+			strings.ToLower(product.Name),
+			strings.ToLower(name),
+		) {
+			results = append(results, product)
+		}
+	}
+
+	return results
 }
