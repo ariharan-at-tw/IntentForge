@@ -16,10 +16,6 @@ func NewProductRepository(products []models.Product) *ProductRepository {
 	}
 }
 
-func (r *ProductRepository) GetAll() []models.Product {
-	return r.products
-}
-
 func (r *ProductRepository) GetByID(id string) (*models.Product, error) {
 	for _, product := range r.products {
 		if product.ID == id {
@@ -30,45 +26,35 @@ func (r *ProductRepository) GetByID(id string) (*models.Product, error) {
 	return nil, fmt.Errorf("product not found")
 }
 
-func (r *ProductRepository) SearchByName(name string) []models.Product {
-	var results []models.Product
-
-	for _, product := range r.products {
-		if strings.Contains(
-			strings.ToLower(product.Name),
-			strings.ToLower(name),
-		) {
-			results = append(results, product)
-		}
-	}
-
-	return results
-}
-
-func (r *ProductRepository) GetByCategory(category string) []models.Product {
-	var results []models.Product
-
-	for _, product := range r.products {
-		if strings.EqualFold(product.Category, category) {
-			results = append(results, product)
-		}
-	}
-
-	return results
-}
-
-func (r *ProductRepository) GetByPriceRange(
-	minPrice *float64,
-	maxPrice *float64,
+func (r *ProductRepository) GetProducts(
+	filter models.ProductFilter,
 ) []models.Product {
 	var results []models.Product
 
 	for _, product := range r.products {
-		if minPrice != nil && product.Price < *minPrice {
+		if filter.Name != "" &&
+			!strings.Contains(
+				strings.ToLower(product.Name),
+				strings.ToLower(filter.Name),
+			) {
 			continue
 		}
 
-		if maxPrice != nil && product.Price > *maxPrice {
+		if filter.Category != "" &&
+			!strings.EqualFold(
+				product.Category,
+				filter.Category,
+			) {
+			continue
+		}
+
+		if filter.MinPrice != nil &&
+			product.Price < *filter.MinPrice {
+			continue
+		}
+
+		if filter.MaxPrice != nil &&
+			product.Price > *filter.MaxPrice {
 			continue
 		}
 
