@@ -1,0 +1,182 @@
+[
+  {
+    "query": "Can you show me all the products?",
+    "expected": {
+      "intent": "LIST_PRODUCTS",
+      "filters": {
+        "name": null,
+        "category": null,
+        "min_price": null,
+        "max_price": null
+      }
+    }
+  },
+  {
+    "query": "I want to see the laptops",
+    "expected": {
+      "intent": "LIST_PRODUCTS",
+      "filters": {
+        "name": null,
+        "category": "laptop",
+        "min_price": null,
+        "max_price": null
+      }
+    }
+  },
+  {
+    "query": "Show me smartphones",
+    "expected": {
+      "intent": "LIST_PRODUCTS",
+      "filters": {
+        "name": null,
+        "category": "smartphone",
+        "min_price": null,
+        "max_price": null
+      }
+    }
+  },
+  {
+    "query": "I need laptops below 60000",
+    "expected": {
+      "intent": "LIST_PRODUCTS",
+      "filters": {
+        "name": null,
+        "category": "laptop",
+        "min_price": null,
+        "max_price": 60000
+      }
+    }
+  },
+  {
+    "query": "Find phones over 30000",
+    "expected": {
+      "intent": "LIST_PRODUCTS",
+      "filters": {
+        "name": null,
+        "category": "phone",
+        "min_price": 30000,
+        "max_price": null
+      }
+    }
+  },
+  {
+    "query": "Show me smartphones between 20000 and 50000",
+    "expected": {
+      "intent": "LIST_PRODUCTS",
+      "filters": {
+        "name": null,
+        "category": "smartphone",
+        "min_price": 20000,
+        "max_price": 50000
+      }
+    }
+  },
+  {
+    "query": "Do you have an iPhone?",
+    "expected": {
+      "intent": "LIST_PRODUCTS",
+      "filters": {
+        "name": "iPhone",
+        "category": null,
+        "min_price": null,
+        "max_price": null
+      }
+    }
+  },
+  {
+    "query": "Do you have Samsung phones?",
+    "expected": {
+      "intent": "LIST_PRODUCTS",
+      "filters": {
+        "name": "Samsung",
+        "category": "phone",
+        "min_price": null,
+        "max_price": null
+      }
+    }
+  },
+  {
+    "query": "Show me Apple laptops",
+    "expected": {
+      "intent": "LIST_PRODUCTS",
+      "filters": {
+        "name": "Apple",
+        "category": "laptop",
+        "min_price": null,
+        "max_price": null
+      }
+    }
+  },
+  {
+    "query": "Show me Samsung phones between 20000 and 50000",
+    "expected": {
+      "intent": "LIST_PRODUCTS",
+      "filters": {
+        "name": "Samsung",
+        "category": "phone",
+        "min_price": 20000,
+        "max_price": 50000
+      }
+    }
+  },
+  {
+    "query": "I need a Dell laptop under 70000",
+    "expected": {
+      "intent": "LIST_PRODUCTS",
+      "filters": {
+        "name": "Dell",
+        "category": "laptop",
+        "min_price": null,
+        "max_price": 70000
+      }
+    }
+  },
+  {
+    "query": "Show me mobile phones below 30000",
+    "expected": {
+      "intent": "LIST_PRODUCTS",
+      "filters": {
+        "name": null,
+        "category": "mobile phone",
+        "min_price": null,
+        "max_price": 30000
+      }
+    }
+  },
+  {
+    "query": "Do you have Samsung mobiles?",
+    "expected": {
+      "intent": "LIST_PRODUCTS",
+      "filters": {
+        "name": "Samsung",
+        "category": "mobile",
+        "min_price": null,
+        "max_price": null
+      }
+    }
+  },
+  {
+    "query": "Show me affordable smartphones",
+    "expected": {
+      "intent": "LIST_PRODUCTS",
+      "filters": {
+        "name": null,
+        "category": "smartphone",
+        "min_price": null,
+        "max_price": null
+      }
+    }
+  },
+  {
+    "query": "I want premium laptops",
+    "expected": {
+      "intent": "LIST_PRODUCTS",
+      "filters": {
+        "name": null,
+        "category": "laptop",
+        "min_price": null,
+        "max_price": null
+      }
+    }
+  }
+]

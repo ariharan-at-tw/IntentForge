@@ -1,0 +1,122 @@
+[
+  {
+    "query": "Show me all products",
+    "expected": {
+      "intent": "LIST_PRODUCTS",
+      "filters": {
+        "name": null,
+        "category": null,
+        "min_price": null,
+        "max_price": null
+      }
+    }
+  },
+  {
+    "query": "Show me laptops",
+    "expected": {
+      "intent": "LIST_PRODUCTS",
+      "filters": {
+        "name": null,
+        "category": "laptop",
+        "min_price": null,
+        "max_price": null
+      }
+    }
+  },
+  {
+    "query": "Show me smartphones",
+    "expected": {
+      "intent": "LIST_PRODUCTS",
+      "filters": {
+        "name": null,
+        "category": "smartphone",
+        "min_price": null,
+        "max_price": null
+      }
+    }
+  },
+  {
+    "query": "Show me laptops under 80000",
+    "expected": {
+      "intent": "LIST_PRODUCTS",
+      "filters": {
+        "name": null,
+        "category": "laptop",
+        "min_price": null,
+        "max_price": 80000
+      }
+    }
+  },
+  {
+    "query": "Show me products above 50000",
+    "expected": {
+      "intent": "LIST_PRODUCTS",
+      "filters": {
+        "name": null,
+        "category": null,
+        "min_price": 50000,
+        "max_price": null
+      }
+    }
+  },
+  {
+    "query": "Show me laptops between 50000 and 100000",
+    "expected": {
+      "intent": "LIST_PRODUCTS",
+      "filters": {
+        "name": null,
+        "category": "laptop",
+        "min_price": 50000,
+        "max_price": 100000
+      }
+    }
+  },
+  {
+    "query": "Do you have iPhone?",
+    "expected": {
+      "intent": "LIST_PRODUCTS",
+      "filters": {
+        "name": "iPhone",
+        "category": null,
+        "min_price": null,
+        "max_price": null
+      }
+    }
+  },
+  {
+    "query": "Do you have Samsung phones?",
+    "expected": {
+      "intent": "LIST_PRODUCTS",
+      "filters": {
+        "name": "Samsung",
+        "category": "phone",
+        "min_price": null,
+        "max_price": null
+      }
+    }
+  },
+  {
+  "query": "Show me affordable smartphones",
+  "expected": {
+    "intent": "LIST_PRODUCTS",
+    "filters": {
+      "name": null,
+      "category": "smartphone",
+      "min_price": null,
+      "max_price": null
+    }
+  }
+},
+{
+  "query": "Do you have Samsung mobiles?",
+  "expected": {
+    "intent": "LIST_PRODUCTS",
+    "filters": {
+      "name": "Samsung",
+      "category": "mobile",
+      "min_price": null,
+      "max_price": null
+    }
+  }
+}
+]
