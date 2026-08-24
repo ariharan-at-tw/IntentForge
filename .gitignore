@@ -1,0 +1,7 @@
+.idea/
+__pycache__/
+*.py[cod]
+
+learn-converse-service/learn-converse-env/
+.venv/
+venv/
