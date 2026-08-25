@@ -1,16 +1,28 @@
 from app.classifier.product_classifier import ProductClassifier
+from app.client.product_client import ProductClient
 from app.llm.model import LLMModel
+from app.service.product_query_service import ProductQueryService
 
 
 def main():
     model = LLMModel()
     classifier = ProductClassifier(model)
 
-    user_input = "Show me laptops under 80000"
+    product_client = ProductClient(
+        base_url="http://localhost:8080"
+    )
 
-    result = classifier.classify(user_input)
+    product_query_service = ProductQueryService(
+        classifier=classifier,
+        product_client=product_client,
+    )
 
-    print(result)
+    user_input = "Show me laptops under 100000000"
+
+    products = product_query_service.search(user_input)
+
+    for product in products:
+        print(product)
 
 
 if __name__ == "__main__":

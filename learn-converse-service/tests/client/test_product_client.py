@@ -90,3 +90,15 @@ def test_get_products_raises_for_http_error(mock_get):
         assert False, "Expected exception"
     except Exception as error:
         assert str(error) == "HTTP 500"
+
+@patch("app.client.product_client.requests.get")
+def test_get_products_returns_empty_list_when_no_products_found(mock_get):
+    mock_get.return_value = mock_response(None)
+
+    client = ProductClient("http://localhost:8080")
+
+    products = client.get_products(
+        ProductFilter(category="laptop", max_price=80000)
+    )
+
+    assert products == []

@@ -32,7 +32,9 @@ class ProductClient:
 
         response.raise_for_status()
 
+        data = response.json() or []
+
         return [
             Product.model_validate(product)
-            for product in response.json()
+            for product in data
         ]
