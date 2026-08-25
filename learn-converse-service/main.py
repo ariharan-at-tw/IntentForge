@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 
+from app.models.chat import ChatRequest
 from app.classifier.product_classifier import ProductClassifier
 from app.client.product_client import ProductClient
 from app.llm.model import LLMModel
 from app.service.product_query_service import ProductQueryService
-
 
 app = FastAPI(title="Learn Converse Service")
 
@@ -25,3 +25,11 @@ product_query_service = ProductQueryService(
 @app.get("/health")
 def health():
     return {"status": "ok"}
+
+@app.post("/chat")
+def chat(request: ChatRequest):
+    products = product_query_service.search(request.message)
+
+    return {
+        "products": products
+    }
