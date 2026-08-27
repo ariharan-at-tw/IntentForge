@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.responses import FileResponse
 
 from app.models.chat import ChatRequest
 from app.classifier.product_classifier import ProductClassifier
@@ -33,3 +34,7 @@ def chat(request: ChatRequest):
     return {
         "products": products
     }
+
+@app.get("/")
+def index():
+    return FileResponse("static/index.html")
