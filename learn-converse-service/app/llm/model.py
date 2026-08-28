@@ -2,7 +2,7 @@ import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 
-MODEL_NAME = "Qwen/Qwen2.5-1.5B-Instruct"   #roughly 3GB size
+MODEL_NAME = "Qwen/Qwen3-4B-Instruct-2507"
 CACHE_DIR = "./model_cache"
 
 
@@ -28,6 +28,7 @@ class LLMModel:
             messages,
             tokenize=False,
             add_generation_prompt=True,
+            enable_thinking=False,
         )
 
         inputs = self.tokenizer(
@@ -50,4 +51,3 @@ class LLMModel:
         )[0]
 
         return response.strip()
-    

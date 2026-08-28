@@ -24,12 +24,12 @@
     }
   },
   {
-    "query": "Show me smartphones",
+    "query": "Do you have Samsung phones?",
     "expected": {
       "intent": "LIST_PRODUCTS",
       "filters": {
-        "name": null,
-        "category": "smartphone",
+        "name": "Samsung",
+        "category": "phone",
         "min_price": null,
         "max_price": null
       }
@@ -48,14 +48,26 @@
     }
   },
   {
-    "query": "Show me products above 50000",
+    "query": "Find phones over 30000",
+    "expected": {
+      "intent": "LIST_PRODUCTS",
+      "filters": {
+        "name": null,
+        "category": "phone",
+        "min_price": 30000,
+        "max_price": null
+      }
+    }
+  },
+  {
+    "query": "Show me products below 10000",
     "expected": {
       "intent": "LIST_PRODUCTS",
       "filters": {
         "name": null,
         "category": null,
-        "min_price": 50000,
-        "max_price": null
+        "min_price": null,
+        "max_price": 10000
       }
     }
   },
@@ -72,51 +84,29 @@
     }
   },
   {
-    "query": "Do you have iPhone?",
+    "query": "Show me affordable smartphones",
     "expected": {
       "intent": "LIST_PRODUCTS",
       "filters": {
-        "name": "iPhone",
-        "category": null,
+        "name": null,
+        "category": "smartphone",
         "min_price": null,
         "max_price": null
       }
     }
   },
   {
-    "query": "Do you have Samsung phones?",
+    "query": "Show me products with at least 10 items in stock",
     "expected": {
-      "intent": "LIST_PRODUCTS",
-      "filters": {
-        "name": "Samsung",
-        "category": "phone",
-        "min_price": null,
-        "max_price": null
-      }
+      "intent": "UNSUPPORTED",
+      "code": "UNSUPPORTED_QUERY"
     }
   },
   {
-  "query": "Show me affordable smartphones",
-  "expected": {
-    "intent": "LIST_PRODUCTS",
-    "filters": {
-      "name": null,
-      "category": "smartphone",
-      "min_price": null,
-      "max_price": null
+    "query": "Show me the cheapest products first",
+    "expected": {
+      "intent": "UNSUPPORTED",
+      "code": "UNSUPPORTED_QUERY"
     }
   }
-},
-{
-  "query": "Do you have Samsung mobiles?",
-  "expected": {
-    "intent": "LIST_PRODUCTS",
-    "filters": {
-      "name": "Samsung",
-      "category": "mobile",
-      "min_price": null,
-      "max_price": null
-    }
-  }
-}
 ]

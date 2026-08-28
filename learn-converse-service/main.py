@@ -6,6 +6,7 @@ from app.classifier.product_classifier import ProductClassifier
 from app.client.product_client import ProductClient
 from app.llm.model import LLMModel
 from app.service.product_query_service import ProductQueryService
+from app.service.chat_service import ChatService
 
 app = FastAPI(title="Learn Converse Service")
 
@@ -18,8 +19,12 @@ product_client = ProductClient(
 )
 
 product_query_service = ProductQueryService(
-    classifier=classifier,
     product_client=product_client,
+)
+
+chat_service = ChatService(
+    classifier=classifier,
+    product_query_service=product_query_service,
 )
 
 
@@ -29,12 +34,14 @@ def health():
 
 @app.post("/chat")
 def chat(request: ChatRequest):
-    products = product_query_service.search(request.message)
-
-    return {
-        "products": products
-    }
+    print(f"Received chat request: {request.message}")
+    return chat_service.process(request.message)
 
 @app.get("/")
 def index():
     return FileResponse("static/index.html")
+
+if __name__ == "__main__":
+    model = LLMModel()
+    classifier = ProductClassifier(model)
+    print(classifier.classify("list the products above 10000"))

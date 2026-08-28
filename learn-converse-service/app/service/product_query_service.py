@@ -1,26 +1,11 @@
-from app.classifier.product_classifier import ProductClassifier
 from app.client.product_client import ProductClient
-from app.models.product import Product
+from app.models.classification import ProductFilter
 
 
 class ProductQueryService:
 
-    def __init__(
-        self,
-        classifier: ProductClassifier,
-        product_client: ProductClient,
-    ):
-        self.classifier = classifier
+    def __init__(self, product_client: ProductClient):
         self.product_client = product_client
 
-    def search(self, query: str) -> list[Product]:
-        classification = self.classifier.classify(query)
-
-        if classification.intent != "LIST_PRODUCTS":
-            raise ValueError(
-                f"Unsupported intent: {classification.intent}"
-            )
-
-        return self.product_client.get_products(
-            classification.filters
-        )
+    def search(self, filters: ProductFilter):
+        return self.product_client.get_products(filters)

@@ -178,5 +178,19 @@
         "max_price": null
       }
     }
-  }
+  },
+  {
+  "query": "Show me products with at least 10 items in stock",
+  "expected": {
+        "intent": "UNSUPPORTED",
+        "code": "UNSUPPORTED_QUERY"
+    }
+},
+{
+  "query": "Show me laptops with a rating above 4",
+  "expected": {
+        "intent": "UNSUPPORTED",
+        "code": "UNSUPPORTED_QUERY"
+    }
+}
 ]

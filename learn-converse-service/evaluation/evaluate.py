@@ -9,14 +9,7 @@ DATASET_FILE = "evaluation/product_queries.json"
 
 
 def is_match(result, expected):
-    return (
-        result.intent == expected["intent"]
-        and result.filters.name == expected["filters"]["name"]
-        and result.filters.category == expected["filters"]["category"]
-        and result.filters.min_price == expected["filters"]["min_price"]
-        and result.filters.max_price == expected["filters"]["max_price"]
-    )
-
+    return result.model_dump() == expected
 
 def parse_arguments():
     parser = argparse.ArgumentParser(
@@ -106,4 +99,3 @@ def main():
 if __name__ == "__main__":
     main()
 
-    

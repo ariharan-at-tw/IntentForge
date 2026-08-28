@@ -11,13 +11,15 @@
 
     <div id="chat"></div>
 
-    <input
-        id="message"
-        type="text"
-        placeholder="Ask me about products..."
-    />
+    <form id="chat-form">
+        <input
+            id="message"
+            type="text"
+            placeholder="Ask me about products..."
+        />
 
-    <button onclick="sendMessage()">Send</button>
+        <button type="submit">Send</button>
+    </form>
 
     <script>
         async function sendMessage() {
@@ -49,6 +51,11 @@
                 addMessage("Bot", "Something went wrong: " + error);
             }
         }
+
+        document.getElementById("chat-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+            sendMessage();
+        });
 
         function addMessage(sender, message) {
             const chat = document.getElementById("chat");

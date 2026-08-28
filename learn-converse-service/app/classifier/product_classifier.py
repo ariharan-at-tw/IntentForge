@@ -1,16 +1,18 @@
 import json
 from unittest import result
+from urllib import response
 
 from app.llm.model import LLMModel
-from app.models.classification import (
-    ClassificationResult,
-    ProductFilter,
-)
+from app.models.classification import ClassificationResult
 
 from app.classifier.validator import validate_classification
 
 import json
 from pathlib import Path
+
+from pydantic import TypeAdapter
+
+classification_adapter = TypeAdapter(ClassificationResult)
 
 
 PROMPT_EXAMPLES_FILE = (
@@ -45,12 +47,24 @@ Expected:
 SYSTEM_PROMPT = """
 You are an e-commerce query classifier.
 
-Convert the user's query into JSON.
+Convert the user's query into exactly one valid JSON classification.
 
-There is exactly one supported intent:
+SUPPORTED INTENTS
+
+1. LIST_PRODUCTS
+2. UNSUPPORTED
+
 LIST_PRODUCTS
 
-The JSON must have exactly this structure:
+Use LIST_PRODUCTS only when the complete request can be represented
+using these filters:
+
+- name
+- category
+- min_price
+- max_price
+
+Return exactly:
 
 {
   "intent": "LIST_PRODUCTS",
@@ -62,72 +76,105 @@ The JSON must have exactly this structure:
   }
 }
 
-Rules:
+UNSUPPORTED
 
-1. intent must ALWAYS be "LIST_PRODUCTS".
+Use UNSUPPORTED when the user asks for anything that cannot be
+represented using name, category, min_price, or max_price.
 
-2. category should contain the product category.
-   Use singular category names.
-   Examples:
-   "laptops" -> "laptop"
-   "smartphones" -> "smartphone"
+Examples:
+- stock quantity
+- availability
+- rating
+- sorting
+- shipping
+- discounts
 
-3. name should contain a specific product name or brand.
+Never ignore or silently drop an unsupported requirement.
 
-4. Do not populate name when the user specifies only a category.
+Return exactly:
 
-5. Price rules:
-   "under X" means max_price = X.
-   "below X" means max_price = X.
-   "less than X" means max_price = X.
-   "up to X" means max_price = X.
+{
+  "intent": "UNSUPPORTED",
+  "code": "UNSUPPORTED_QUERY"
+}
 
-   "above X" means min_price = X.
-   "over X" means min_price = X.
-   "more than X" means min_price = X.
+Do not include "filters" for UNSUPPORTED.
 
-   "between X and Y" means:
-   min_price = X
-   max_price = Y
+FILTER RULES
 
-6. Use null when a filter is not specified.
+1. Category
 
-7. Never use empty strings. Use null instead.
+Extract the product category and use a singular form.
 
-8. Extract product name and category separately.
+Examples:
+"laptops" -> "laptop"
+"smartphones" -> "smartphone"
 
-If the query contains a brand followed by a product category,
-put the brand in "name" and the product type in "category".
+2. Name
+
+Extract a specific product name or brand.
+
+Do not populate name when the user specifies only a category.
+
+If a brand and category are both present, keep them separate.
 
 Example:
-"Samsung phones" →
+"Samsung phones" ->
 name = "Samsung"
 category = "phone"
 
-"Samsung mobiles" →
-name = "Samsung"
-category = "mobile"
+3. Price
 
-9. Never infer numeric price values.
+Only populate a price field when the user explicitly provides
+a numeric price.
 
-Only populate min_price or max_price when the user explicitly
-provides a numeric price.
+Lower-price conditions:
 
-Words such as:
-"cheap", "affordable", "expensive", "premium", "budget"
-must NOT be converted into numeric prices.
+"under X"
+"below X"
+"less than X"
+"up to X"
 
-Example:
-"Show me affordable smartphones" →
-min_price = null
-max_price = null
+-> max_price = X
+-> min_price = null
 
-10. Return ONLY valid JSON.
-   Do not include markdown.
-   Do not include explanations.
+Higher-price conditions:
 
-Examples:
+"above X"
+"over X"
+"more than X"
+"at least X"
+
+-> min_price = X
+-> max_price = null
+
+Range:
+
+"between X and Y"
+
+-> min_price = X
+-> max_price = Y
+
+IMPORTANT:
+Preserve the direction of the user's price condition.
+Do not swap min_price and max_price.
+
+Do not infer numeric prices from words such as:
+cheap, affordable, expensive, premium, budget.
+
+4. Missing filters
+
+Use null when a filter is not specified.
+
+Never use empty strings.
+
+OUTPUT
+
+Return ONLY valid JSON.
+Do not return markdown.
+Do not return explanations.
 """
+
 
 class ProductClassifier:
 
@@ -135,7 +182,12 @@ class ProductClassifier:
         self.model = model
 
     def classify(self, user_input: str) -> ClassificationResult:
-        prompt = SYSTEM_PROMPT + "\n" + build_prompt_examples()
+        prompt = (
+            SYSTEM_PROMPT
+            + "\n\n"
+            + "Here are examples of the expected classification behavior:\n"
+            + build_prompt_examples()
+        )
 
         messages = [
             {
@@ -150,9 +202,12 @@ class ProductClassifier:
 
         response = self.model.generate(messages)
 
+        print("LLM RESPONSE:")
+        print(response)
+
         data = json.loads(response)
 
-        result = ClassificationResult.model_validate(data)
+        result = classification_adapter.validate_python(data)
 
         validate_classification(result)
 
